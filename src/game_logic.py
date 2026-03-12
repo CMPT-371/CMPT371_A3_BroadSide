@@ -11,11 +11,12 @@ Purpose:
 Architecture:
     Three core classes form a hierarchy:
 
-        Ship      — Represents a single ship (name, size, positions, hit tracking).
-        Board     — Represents a player's 10x10 grid (ships, shots, placement validation).
-        GameState — Orchestrates a full game between two players (turns, phases, win detection).
+        Ship      - Represents a single ship (name, size, positions, hits).
+        Board     - A player's 10x10 grid (ships, shots, validation).
+        GameState - Orchestrates a full game (turns, phases, win detection).
 
-    All methods are deterministic and side-effect-free (except mutating their own state).
+    All methods are deterministic and side-effect-free
+    (except mutating their own state).
     This makes the logic easy to test in isolation without sockets or threads.
 
 References:
@@ -58,10 +59,10 @@ class CellState(StrEnum):
     providing a clean namespace for the possible values.
     """
 
-    EMPTY = "~"   # Untouched water
-    SHIP = "S"    # Contains a ship segment (visible only on own board)
-    HIT = "X"     # Shot landed on a ship
-    MISS = "O"    # Shot landed on empty water
+    EMPTY = "~"  # Untouched water
+    SHIP = "S"  # Contains a ship segment (visible only on own board)
+    HIT = "X"  # Shot landed on a ship
+    MISS = "O"  # Shot landed on empty water
 
 
 class GamePhase(StrEnum):
@@ -71,14 +72,15 @@ class GamePhase(StrEnum):
     No phase can be revisited once it transitions forward.
     """
 
-    SETUP = "setup"         # Players are placing ships
-    PLAYING = "playing"     # Players are taking turns firing
-    FINISHED = "finished"   # A winner has been determined
+    SETUP = "setup"  # Players are placing ships
+    PLAYING = "playing"  # Players are taking turns firing
+    FINISHED = "finished"  # A winner has been determined
 
 
 # ---------------------------------------------------------------------------
 # Ship
 # ---------------------------------------------------------------------------
+
 
 @dataclass
 class Ship:
@@ -114,6 +116,7 @@ class Ship:
 # Board
 # ---------------------------------------------------------------------------
 
+
 class Board:
     """A single player's 10x10 Battleship grid.
 
@@ -130,8 +133,7 @@ class Board:
     def __init__(self) -> None:
         """Initialize a blank 10x10 board filled with empty water."""
         self.grid: list[list[CellState]] = [
-            [CellState.EMPTY for _ in range(BOARD_SIZE)]
-            for _ in range(BOARD_SIZE)
+            [CellState.EMPTY for _ in range(BOARD_SIZE)] for _ in range(BOARD_SIZE)
         ]
         self.ships: list[Ship] = []
 
@@ -154,8 +156,8 @@ class Board:
 
         Args:
             name: Ship type (must be a key in SHIP_DEFINITIONS).
-            row: Starting row index (0–9, top to bottom).
-            col: Starting column index (0–9, left to right).
+            row: Starting row index (0-9, top to bottom).
+            col: Starting column index (0-9, left to right).
             horizontal: If True, ship extends rightward from (row, col).
                         If False, ship extends downward.
 
@@ -222,8 +224,8 @@ class Board:
         and updates the grid state accordingly.
 
         Args:
-            row: Target row (0–9).
-            col: Target column (0–9).
+            row: Target row (0-9).
+            col: Target column (0-9).
 
         Returns:
             A tuple of (result, ship_name_or_none):
@@ -239,7 +241,7 @@ class Board:
         if not (0 <= row < BOARD_SIZE and 0 <= col < BOARD_SIZE):
             raise ValueError(
                 f"Shot coordinates ({row}, {col}) are out of bounds "
-                f"(valid range: 0–{BOARD_SIZE - 1})"
+                f"(valid range: 0-{BOARD_SIZE - 1})"
             )
 
         # --- Duplicate shot check ---
@@ -280,8 +282,8 @@ class Board:
         targeted (not HIT and not MISS).
 
         Args:
-            row: Target row (0–9).
-            col: Target column (0–9).
+            row: Target row (0-9).
+            col: Target column (0-9).
 
         Returns:
             True if the cell can be fired upon, False otherwise.
@@ -334,6 +336,7 @@ class Board:
 # GameState
 # ---------------------------------------------------------------------------
 
+
 class GameState:
     """Orchestrates a complete two-player Battleship game.
 
@@ -373,8 +376,8 @@ class GameState:
 
         Each entry in *ships_data* must contain:
             - "name": str  (a key in SHIP_DEFINITIONS)
-            - "row": int   (starting row, 0–9)
-            - "col": int   (starting column, 0–9)
+            - "row": int   (starting row, 0-9)
+            - "col": int   (starting column, 0-9)
             - "horizontal": bool
 
         The method places ships one at a time, rolling back all placements
@@ -397,8 +400,7 @@ class GameState:
         # --- Validate that exactly 5 ships are provided ---
         if len(ships_data) != len(SHIP_DEFINITIONS):
             return False, (
-                f"Expected {len(SHIP_DEFINITIONS)} ships, "
-                f"got {len(ships_data)}"
+                f"Expected {len(SHIP_DEFINITIONS)} ships, " f"got {len(ships_data)}"
             )
 
         # --- Validate that all required ship types are present ---
@@ -467,8 +469,8 @@ class GameState:
 
         Args:
             player_id: The player firing the shot (1 or 2).
-            row: Target row on the opponent's board (0–9).
-            col: Target column on the opponent's board (0–9).
+            row: Target row on the opponent's board (0-9).
+            col: Target column on the opponent's board (0-9).
 
         Returns:
             A dict suitable for sending as a protocol message payload::
@@ -489,15 +491,12 @@ class GameState:
         """
         # --- Phase check ---
         if self.phase != GamePhase.PLAYING:
-            raise ValueError(
-                f"Cannot fire during the '{self.phase.value}' phase"
-            )
+            raise ValueError(f"Cannot fire during the '{self.phase.value}' phase")
 
         # --- Turn check ---
         if player_id != self.current_turn:
             raise ValueError(
-                f"It is Player {self.current_turn}'s turn, "
-                f"not Player {player_id}'s"
+                f"It is Player {self.current_turn}'s turn, " f"not Player {player_id}'s"
             )
 
         # --- Determine the target board (opponent's) ---

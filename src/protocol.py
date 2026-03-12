@@ -57,6 +57,7 @@ logger = logging.getLogger(__name__)
 # Public API
 # ---------------------------------------------------------------------------
 
+
 def send_message(sock: socket.socket, message: dict) -> None:
     """Serialize a dictionary to JSON and send it as a length-prefixed frame.
 
@@ -72,7 +73,8 @@ def send_message(sock: socket.socket, message: dict) -> None:
 
     Args:
         sock: A connected TCP socket (``AF_INET``, ``SOCK_STREAM``).
-        message: A JSON-serializable dictionary (e.g., ``{"type": "FIRE", "row": 3, "col": 5}``).
+        message: A JSON-serializable dictionary
+            (e.g., ``{"type": "FIRE", "row": 3, "col": 5}``).
 
     Raises:
         TypeError: If *message* is not JSON-serializable.
@@ -155,6 +157,7 @@ def recv_message(sock: socket.socket) -> dict | None:
 # ---------------------------------------------------------------------------
 # Internal helpers
 # ---------------------------------------------------------------------------
+
 
 def _recv_exactly(sock: socket.socket, num_bytes: int) -> bytes | None:
     """Read exactly *num_bytes* from the socket, handling TCP fragmentation.

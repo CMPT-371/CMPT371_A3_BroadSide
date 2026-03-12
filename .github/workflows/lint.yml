@@ -1,0 +1,71 @@
+# ============================================================================
+# BroadSide — Auto-format & Lint CI Workflow
+# ============================================================================
+# Triggers on every push to main and every pull request.
+#
+# This workflow is the CI SAFETY NET: if a developer forgets to install
+# pre-commit locally, this catches formatting/lint issues, auto-fixes them,
+# and pushes a corrective commit back to the branch. The build never fails
+# due to fixable style issues.
+#
+# How it prevents infinite loops:
+#   The default GITHUB_TOKEN does NOT trigger further workflow runs when it
+#   pushes a commit. This is a built-in GitHub safety feature.
+# ============================================================================
+
+name: Auto-format & Lint
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Grant write access so the workflow can push auto-fix commits.
+permissions:
+  contents: write
+
+jobs:
+  format-and-lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      # ── Checkout ──────────────────────────────────────────────────────
+      # For pull_request events, checkout the PR head branch (not the
+      # ephemeral merge ref) so auto-fix commits land on the actual branch.
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref }}
+          fetch-depth: 0
+
+      # ── Python setup ──────────────────────────────────────────────────
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # ── Install formatting tools ──────────────────────────────────────
+      - name: Install Black and Ruff
+        run: pip install black ruff
+
+      # ── Auto-fix: Black ───────────────────────────────────────────────
+      # Reformats all Python files in-place. If files are already clean,
+      # this is a no-op.
+      - name: Run Black (auto-format)
+        run: black .
+
+      # ── Auto-fix: Ruff ────────────────────────────────────────────────
+      # Applies all auto-fixable lint corrections (import sorting, unused
+      # imports, pyupgrade, etc.). Config is read from pyproject.toml.
+      - name: Run Ruff (auto-fix)
+        run: ruff check --fix .
+
+      # ── Push fixes (if any) ──────────────────────────────────────────
+      # Only creates a commit if Black or Ruff actually modified files.
+      # If everything was already clean, this step is a no-op.
+      - name: Commit and push formatting fixes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "style: auto-format with Black + Ruff"
+          file_pattern: "*.py"

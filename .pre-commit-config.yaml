@@ -1,0 +1,44 @@
+# ============================================================================
+# BroadSide — Pre-commit Hook Configuration
+# ============================================================================
+# Automatically formats and lints Python files on every `git commit`.
+#
+# Setup (one-time, after installing dev dependencies):
+#   pre-commit install
+#
+# Manual run on all files (useful after initial setup):
+#   pre-commit run --all-files
+#
+# Update hook versions to latest:
+#   pre-commit autoupdate
+#
+# How it works:
+#   1. You run `git commit`.
+#   2. Black reformats any staged .py files.
+#   3. Ruff fixes lint issues (import sorting, unused imports, etc.).
+#   4. If either tool modified a file, the commit is ABORTED so you can
+#      review the changes. Run `git add . && git commit` again — the
+#      second attempt passes because the files are now clean.
+# ============================================================================
+
+repos:
+  # -- Black: opinionated Python code formatter ------------------------------
+  # Runs first so all code is consistently formatted before Ruff lints it.
+  # Black reads its config from pyproject.toml [tool.black] automatically.
+  - repo: https://github.com/psf/black
+    rev: "26.3.1"
+    hooks:
+      - id: black
+        language_version: python3
+
+  # -- Ruff: fast Python linter with auto-fix --------------------------------
+  # Runs second. Fixes import ordering, unused imports, pyupgrade
+  # modernizations, and other auto-fixable rules defined in pyproject.toml.
+  # --fix:                 apply all auto-fixable corrections.
+  # --exit-non-zero-on-fix: abort the commit when files are modified so the
+  #                         developer re-stages the auto-fixed changes.
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: "v0.15.5"
+    hooks:
+      - id: ruff
+        args: ["--fix", "--exit-non-zero-on-fix"]

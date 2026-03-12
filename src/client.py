@@ -37,9 +37,6 @@ from __future__ import annotations
 
 import logging
 import socket
-import threading
-
-from src.protocol import recv_message, send_message
 
 # ---------------------------------------------------------------------------
 # Client configuration
@@ -54,6 +51,7 @@ logger = logging.getLogger("BroadSide-Client")
 # ---------------------------------------------------------------------------
 # Game client
 # ---------------------------------------------------------------------------
+
 
 class GameClient:
     """Manages the TCP connection and bridges between network and GUI.
@@ -110,7 +108,10 @@ class GameClient:
         raise NotImplementedError("Phase 3: GameClient.start")
 
     def shutdown(self) -> None:
-        """Cleanly shut down the client: stop the network thread and close the socket."""
+        """Cleanly shut down the client.
+
+        Stops the network thread and closes the socket.
+        """
         raise NotImplementedError("Phase 3: GameClient.shutdown")
 
 

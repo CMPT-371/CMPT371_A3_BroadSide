@@ -1,0 +1,34 @@
+# ============================================================================
+# BroadSide — Developer Dependencies
+# ============================================================================
+# Install with:
+#   pip install -r requirements-dev.txt
+#
+# This file pulls in all runtime dependencies (Pillow, etc.) via -r and adds
+# the formatting, linting, and pre-commit tools needed for development.
+#
+# The grader only runs `pip install -r requirements.txt` — they never see
+# these dev tools. This separation ensures a clean install experience.
+# ============================================================================
+
+# Runtime dependencies (Pillow for GUI ship sprites).
+-r requirements.txt
+
+# -- Code formatting ---------------------------------------------------------
+# Black: deterministic Python code formatter.
+# 26.x introduced the 2026 stable style. Pinned <27.0 to prevent surprise
+# breaking changes across major versions.
+# Docs: https://black.readthedocs.io/en/stable/
+black>=26.0,<27.0
+
+# -- Linting -----------------------------------------------------------------
+# Ruff: extremely fast Python linter and import sorter (written in Rust).
+# Replaces flake8, isort, pyupgrade, and several flake8 plugins.
+# Docs: https://docs.astral.sh/ruff/
+ruff>=0.15.0,<1.0
+
+# -- Pre-commit hook framework -----------------------------------------------
+# Pre-commit: manages and runs git pre-commit hooks from .pre-commit-config.yaml.
+# After install, run `pre-commit install` to activate the hooks.
+# Docs: https://pre-commit.com/
+pre-commit>=4.0,<5.0

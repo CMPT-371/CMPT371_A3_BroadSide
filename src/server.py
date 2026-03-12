@@ -45,9 +45,6 @@ import logging
 import socket
 import threading
 
-from src.game_logic import GameState
-from src.protocol import recv_message, send_message
-
 # ---------------------------------------------------------------------------
 # Server configuration
 # ---------------------------------------------------------------------------
@@ -76,6 +73,7 @@ queue_lock = threading.Lock()
 # Game session (runs on a dedicated daemon thread per matched pair)
 # ---------------------------------------------------------------------------
 
+
 def game_session(conn_p1: socket.socket, conn_p2: socket.socket) -> None:
     """Run an isolated game loop for two matched players.
 
@@ -92,6 +90,7 @@ def game_session(conn_p1: socket.socket, conn_p2: socket.socket) -> None:
 # ---------------------------------------------------------------------------
 # Server entry point
 # ---------------------------------------------------------------------------
+
 
 def start_server(host: str = HOST, port: int = PORT) -> None:
     """Start the BroadSide TCP server.

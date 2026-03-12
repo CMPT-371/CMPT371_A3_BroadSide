@@ -1,0 +1,58 @@
+# ============================================================================
+# BroadSide — Tool Configuration
+# ============================================================================
+# Central configuration for Black (formatter) and Ruff (linter).
+# Both tools read from pyproject.toml by default — no CLI flags needed.
+#
+# Docs:
+#   Black: https://black.readthedocs.io/en/stable/usage_and_configuration/
+#   Ruff:  https://docs.astral.sh/ruff/configuration/
+# ============================================================================
+
+
+# -- Black (code formatter) --------------------------------------------------
+# Black enforces a single, deterministic code style. Running Black on the
+# same input always produces identical output, eliminating style debates.
+
+[tool.black]
+target-version = ["py310"]   # Minimum Python version — prevents downgrading
+                             # modern syntax (e.g., X | Y union types).
+line-length = 88             # Black's default; explicit here for clarity.
+
+
+# -- Ruff (linter + import sorter) ------------------------------------------
+# Ruff replaces flake8, isort, pyupgrade, and several flake8 plugins in a
+# single tool that runs 10–100x faster (written in Rust).
+
+[tool.ruff]
+target-version = "py310"     # Match Black's target.
+line-length = 88             # Match Black's line length.
+src = ["src"]                # Tells Ruff where first-party imports live so
+                             # isort groups `from src.protocol import ...`
+                             # correctly (not as third-party).
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors — baseline PEP 8 compliance.
+    "W",    # pycodestyle warnings — whitespace and formatting issues.
+    "F",    # pyflakes — unused imports, undefined names, redefined unused.
+    "I",    # isort — import sorting and grouping (replaces standalone isort).
+    "UP",   # pyupgrade — enforces modern Python 3.10+ idioms
+            #   (e.g., `dict` over `typing.Dict`, `X | Y` over `Union[X, Y]`).
+    "B",    # flake8-bugbear — catches common bugs and design problems
+            #   (e.g., mutable default arguments, assert on tuples).
+    "SIM",  # flake8-simplify — flags unnecessarily complex constructs
+            #   (e.g., `if x == True` → `if x`, collapsible if statements).
+    "RUF",  # ruff-specific rules — Pythonic improvements unique to Ruff
+            #   (e.g., unnecessary `dict` call, implicit `Optional`).
+]
+
+# Every rule that Ruff knows how to auto-fix WILL be fixed without asking.
+# This is the key to "zero human intervention" — `ruff check --fix` resolves
+# import ordering, unused imports, modern syntax, and more automatically.
+fixable = ["ALL"]
+unfixable = []
+
+[tool.ruff.lint.isort]
+known-first-party = ["src"]  # Match the `src` setting above so isort
+                             # distinguishes our modules from third-party.

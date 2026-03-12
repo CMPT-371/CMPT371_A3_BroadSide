@@ -46,12 +46,13 @@ References:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Callable
+from collections.abc import Callable
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     import tkinter as tk
 
-from src.game_logic import BOARD_SIZE, SHIP_DEFINITIONS
+from src.game_logic import SHIP_DEFINITIONS
 
 # ---------------------------------------------------------------------------
 # Visual constants
@@ -62,22 +63,23 @@ CELL_SIZE: int = 40
 
 # Color palette for cell states.
 COLORS: dict[str, str] = {
-    "empty": "#1a3a5c",       # Dark navy — untouched water
-    "ship": "#708090",        # Steel gray — own ship segment
-    "hit": "#e74c3c",         # Red — confirmed hit on a ship
-    "miss": "#ecf0f1",        # Off-white — shot missed
-    "sunk": "#c0392b",        # Dark red — sunk ship cell
-    "hover_valid": "#3498db", # Light blue — valid placement/target hover
+    "empty": "#1a3a5c",  # Dark navy — untouched water
+    "ship": "#708090",  # Steel gray — own ship segment
+    "hit": "#e74c3c",  # Red — confirmed hit on a ship
+    "miss": "#ecf0f1",  # Off-white — shot missed
+    "sunk": "#c0392b",  # Dark red — sunk ship cell
+    "hover_valid": "#3498db",  # Light blue — valid placement/target hover
     "hover_invalid": "#e74c3c",  # Red — invalid placement hover
-    "grid_line": "#2c3e50",   # Dark slate — grid border lines
+    "grid_line": "#2c3e50",  # Dark slate — grid border lines
     "background": "#0d1b2a",  # Deep navy — window background
-    "text": "#ecf0f1",        # Off-white — label text
+    "text": "#ecf0f1",  # Off-white — label text
 }
 
 
 # ---------------------------------------------------------------------------
 # GUI class
 # ---------------------------------------------------------------------------
+
 
 class BattleshipGUI:
     """Tkinter-based GUI for BroadSide.

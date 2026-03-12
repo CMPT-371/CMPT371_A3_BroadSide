@@ -124,6 +124,32 @@ venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 ```
 
+### **Step 3b: Developer Setup — Formatting & Linting (Contributors Only)**
+
+> *This step is only needed if you are developing/modifying the code. If you are a grader or just running the application, skip to Step 4.*
+
+Install the developer tools (Black formatter, Ruff linter, pre-commit framework):
+
+```bash
+pip install -r requirements-dev.txt
+```
+
+Activate the pre-commit hooks (one-time setup per clone):
+
+```bash
+pre-commit install
+```
+
+From this point on, every `git commit` will **automatically format and lint** your code. If Black or Ruff modify any files, the commit will pause so you can review the changes — simply run `git add . && git commit` again.
+
+To manually format the entire codebase at any time:
+
+```bash
+pre-commit run --all-files
+```
+
+**CI safety net:** Even if you skip this step, the GitHub Actions workflow will auto-fix and push formatting corrections on every push to `main`.
+
 ### **Step 4: Start the Server**
 
 The server binds to `127.0.0.1` on port `5050` by default.
