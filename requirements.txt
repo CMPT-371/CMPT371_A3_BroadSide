@@ -1,0 +1,39 @@
+# ============================================================================
+# BroadSide — Python Dependencies
+# ============================================================================
+# CMPT 371 Assignment 3 — Socket Programming
+#
+# Python version: 3.10+
+# Platform: macOS, Windows, Linux
+#
+# Install:
+#   pip install -r requirements.txt
+#
+# ============================================================================
+# Core dependencies (stdlib — no installation needed)
+# ----------------------------------------------------------------------------
+# The following modules are part of the Python standard library and do NOT
+# require pip installation. They are listed here for documentation purposes:
+#
+#   socket       — TCP/IP networking (AF_INET, SOCK_STREAM)
+#   threading    — Concurrent game session management
+#   json         — JSON serialization for the application-layer protocol
+#   struct       — Binary packing for the 4-byte length-prefix framing header
+#   tkinter      — GUI framework (ships with standard Python distribution)
+#   dataclasses  — Typed data models (Ship, Board, GameState)
+#   logging      — Structured server-side logging
+#   enum         — Game state and cell type constants
+#   sys          — System exit handling
+#   uuid         — Unique session identifiers
+#
+# ============================================================================
+# Third-party dependencies
+# ----------------------------------------------------------------------------
+
+# Pillow — Python Imaging Library fork
+# Used for rendering custom ship sprites, hit/miss icons, and splash screen
+# assets in the Tkinter GUI. Provides ImageTk for embedding PNG/JPEG images
+# into Canvas widgets.
+# Docs: https://pillow.readthedocs.io/en/stable/
+# Supports: Python 3.9 — 3.14
+Pillow>=11.0,<13.0

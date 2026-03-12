@@ -82,6 +82,8 @@ To run this project, you need:
   - macOS: Included with the official Python installer from [python.org](https://www.python.org/)
   - Windows: Included by default with the official Python installer (ensure "tcl/tk" is checked during install)
   - Linux: Install via `sudo apt-get install python3-tk` (Debian/Ubuntu)
+- **Pillow** (installed automatically via `requirements.txt`)
+  - Used for custom ship sprites and visual assets in the GUI
 
 ---
 

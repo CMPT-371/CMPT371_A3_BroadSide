@@ -201,15 +201,13 @@ Every `.py` file gets:
 ### Task 0.3: Requirements File (P2, 10 min)
 
 ```
-# requirements.txt
-# No external dependencies required for core functionality.
-# Tkinter ships with the standard Python distribution.
-# This file exists for completeness and to satisfy the assignment requirement.
+# Third-party dependencies
+Pillow>=11.0,<13.0    # Custom ship sprites and visual assets for Tkinter GUI
 ```
 
-If we add any non-stdlib dependencies later (e.g., `Pillow` for ship sprites for the bonus), add them here. For now, the entire project uses only the Python standard library: `socket`, `threading`, `json`, `struct`, `tkinter`, `dataclasses`, `enum`, `logging`.
+The project uses the Python standard library for all core functionality (`socket`, `threading`, `json`, `struct`, `tkinter`, `dataclasses`, `enum`, `logging`). The only external dependency is **Pillow** — used for rendering custom PNG ship sprites and hit/miss icons in the Tkinter Canvas via `ImageTk`. Pinned to `>=11.0,<13.0` to support Python 3.10+ across all platforms.
 
-**Acceptance criterion:** `pip install -r requirements.txt` succeeds (even if it installs nothing).
+**Acceptance criterion:** `pip install -r requirements.txt` succeeds and `python3 -c "from PIL import Image, ImageTk; print('Pillow OK')"` runs without error.
 
 ### Task 0.4: Git Workflow Agreement (Both, 10 min)
 
@@ -879,7 +877,7 @@ Update the README with the actual video link.
 | Ship set | Carrier(5), Battleship(4), Cruiser(3), Submarine(3), Destroyer(2) | Classic Hasbro Battleship rules. 17 total ship cells = ~34 turns average game. |
 | Data format | JSON | Human-readable, built into Python stdlib. Sufficient for this message complexity. |
 | Logging | `logging` module on server, `print`/game log on client | Server needs structured logs for debugging. Client has the GUI game log. |
-| External dependencies | None (stdlib only) | Eliminates `requirements.txt` installation failures. Tkinter is bundled. Zero risk of "code doesn't run." |
+| External dependencies | Pillow (`>=11.0,<13.0`) | Only non-stdlib dependency. Used for custom ship sprites and visual assets in the Tkinter GUI (bonus marks). Pinned with a compatible range to avoid install failures. All other modules are stdlib. |
 
 ---
 
