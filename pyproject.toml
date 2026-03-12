@@ -56,3 +56,17 @@ unfixable = []
 [tool.ruff.lint.isort]
 known-first-party = ["src"]  # Match the `src` setting above so isort
                              # distinguishes our modules from third-party.
+
+
+# -- pytest (test runner) ---------------------------------------------------
+# Docs: https://docs.pytest.org/en/stable/reference/customize.html
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]        # Discover tests only in the tests/ directory.
+pythonpath = ["."]           # Add the project root to sys.path so
+                             # `from src.protocol import ...` works in tests.
+addopts = [
+    "-v",                    # Verbose: show each test name and result.
+    "--strict-markers",      # Error on unknown @pytest.mark decorators.
+    "--tb=short",            # Shorter tracebacks for cleaner CI output.
+]

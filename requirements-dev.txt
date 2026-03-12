@@ -27,6 +27,12 @@ black>=26.0,<27.0
 # Docs: https://docs.astral.sh/ruff/
 ruff>=0.15.0,<1.0
 
+# -- Testing -----------------------------------------------------------------
+# pytest: modern Python test framework. Discovers tests automatically,
+# provides rich assertion introspection, and supports fixtures/parametrize.
+# Docs: https://docs.pytest.org/en/stable/
+pytest>=8.0,<9.0
+
 # -- Pre-commit hook framework -----------------------------------------------
 # Pre-commit: manages and runs git pre-commit hooks from .pre-commit-config.yaml.
 # After install, run `pre-commit install` to activate the hooks.
