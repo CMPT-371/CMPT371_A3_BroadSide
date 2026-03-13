@@ -27,8 +27,18 @@ References:
 
 from __future__ import annotations
 
+import sys
 from dataclasses import dataclass, field
-from enum import StrEnum
+from enum import Enum
+
+# StrEnum was added in Python 3.11. On 3.10 we build an equivalent by mixing
+# str and Enum so that values compare equal to plain string literals.
+if sys.version_info >= (3, 11):
+    from enum import StrEnum
+else:
+
+    class StrEnum(str, Enum):  # type: ignore[no-redef]
+        """Backport of StrEnum for Python 3.10."""
 
 # ---------------------------------------------------------------------------
 # Constants
