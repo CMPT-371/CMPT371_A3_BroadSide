@@ -1,5 +1,5 @@
 """
-CMPT 371 A3: BroadSide - Tkinter GUI Module 
+CMPT 371 A3: BroadSide - Tkinter GUI Module
 
 Purpose:
     Renders the Battleship game interface using Tkinter Canvas widgets.
@@ -46,57 +46,57 @@ LABEL_PAD: int = 28
 # Color palette for all UI elements.
 COLORS: dict[str, str] = {
     # -- Cell state backgrounds -------------------------------------------
-    "empty": "#0c1e30",           # Deep navy — untouched water
-    "ship": "#3d5a6e",            # Steel blue-gray — own ship segment
-    "hit": "#8b0000",             # Dark crimson — hit cell background
-    "miss": "#101e2d",            # Very dark slate — missed cell background
-    "sunk": "#4a0000",            # Near-black red — sunk ship cell
-    "hover_valid": "#1a5c9e",     # Deep blue — valid placement/target hover
-    "hover_invalid": "#7f0000",   # Deep red — invalid placement hover
+    "empty": "#0c1e30",  # Deep navy — untouched water
+    "ship": "#3d5a6e",  # Steel blue-gray — own ship segment
+    "hit": "#8b0000",  # Dark crimson — hit cell background
+    "miss": "#101e2d",  # Very dark slate — missed cell background
+    "sunk": "#4a0000",  # Near-black red — sunk ship cell
+    "hover_valid": "#1a5c9e",  # Deep blue — valid placement/target hover
+    "hover_invalid": "#7f0000",  # Deep red — invalid placement hover
     # -- Grid -------------------------------------------------------------
-    "grid_line": "#091523",       # Very dark — cell borders
+    "grid_line": "#091523",  # Very dark — cell borders
     # -- Water decoration -------------------------------------------------
-    "wave_bright": "#1e4565",     # Visible ripple highlight (much more contrast)
-    "wave_dim": "#162d4a",        # Secondary ripple
+    "wave_bright": "#1e4565",  # Visible ripple highlight (much more contrast)
+    "wave_dim": "#162d4a",  # Secondary ripple
     # -- Window -----------------------------------------------------------
-    "background": "#050c14",      # Deep space navy — window background
-    "panel_bg": "#080f1a",        # Slightly lighter — panel areas
+    "background": "#050c14",  # Deep space navy — window background
+    "panel_bg": "#080f1a",  # Slightly lighter — panel areas
     # -- Typography -------------------------------------------------------
-    "text": "#8dafc0",            # Cool off-white — general labels
-    "text_bright": "#d4e8f4",     # Bright white — important text
-    "text_dim": "#3a5268",        # Dimmed — secondary labels
-    "title": "#ffca28",           # Amber gold — main title
-    "title_own": "#4fc3f7",       # Cyan — YOUR FLEET heading
-    "title_attack": "#ef5350",    # Coral red — ATTACK BOARD heading
+    "text": "#8dafc0",  # Cool off-white — general labels
+    "text_bright": "#d4e8f4",  # Bright white — important text
+    "text_dim": "#3a5268",  # Dimmed — secondary labels
+    "title": "#ffca28",  # Amber gold — main title
+    "title_own": "#4fc3f7",  # Cyan — YOUR FLEET heading
+    "title_attack": "#ef5350",  # Coral red — ATTACK BOARD heading
     # -- Game log ---------------------------------------------------------
-    "log_bg": "#030a11",          # Very dark — log background
-    "log_hit": "#ff6b6b",         # Bright red — hit event text
-    "log_miss": "#5b9dc0",        # Steel blue — miss event text
-    "log_sunk": "#ff9e40",        # Orange — sunk event text
-    "log_system": "#6abf6a",      # Green — system/status messages
+    "log_bg": "#030a11",  # Very dark — log background
+    "log_hit": "#ff6b6b",  # Bright red — hit event text
+    "log_miss": "#5b9dc0",  # Steel blue — miss event text
+    "log_sunk": "#ff9e40",  # Orange — sunk event text
+    "log_system": "#6abf6a",  # Green — system/status messages
     # -- Status bar backgrounds -------------------------------------------
     "status_turn_bg": "#0a280a",  # Dark green — your turn
     "status_wait_bg": "#080f1a",  # Dark navy — waiting
     "status_over_bg": "#280a0a",  # Dark red — game over
     # -- Cell markers (drawn on top of cell rectangles) -------------------
-    "hit_marker": "#ff4444",      # Bright red — hit explosion fill
-    "hit_glow": "#ff8c00",        # Orange — hit glow outer
-    "sunk_marker": "#ff6600",     # Orange — sunk explosion fill
-    "sunk_glow": "#ffcc00",       # Yellow — sunk outer glow
-    "miss_marker": "#3d84a8",     # Steel blue — miss ring outline
-    "miss_ring": "#5ba8d0",       # Lighter blue — outer splash ring
-    "miss_dot": "#6ab0d0",        # Light blue — center dot
+    "hit_marker": "#ff4444",  # Bright red — hit explosion fill
+    "hit_glow": "#ff8c00",  # Orange — hit glow outer
+    "sunk_marker": "#ff6600",  # Orange — sunk explosion fill
+    "sunk_glow": "#ffcc00",  # Yellow — sunk outer glow
+    "miss_marker": "#3d84a8",  # Steel blue — miss ring outline
+    "miss_ring": "#5ba8d0",  # Lighter blue — outer splash ring
+    "miss_dot": "#6ab0d0",  # Light blue — center dot
     # -- Ship silhouette --------------------------------------------------
     "ship_highlight": "#6a8fa0",  # Light stripe on top of ship cells
-    "ship_deck": "#2d4555",       # Darker deck stripe
-    "ship_outline": "#5a8098",    # Ship cell border
+    "ship_deck": "#2d4555",  # Darker deck stripe
+    "ship_outline": "#5a8098",  # Ship cell border
     # -- Ship placement roster --------------------------------------------
-    "roster_placed_bg": "#112211",    # Dark green — ship placed
-    "roster_placed_fg": "#6abf6a",    # Light green text
-    "roster_current_bg": "#0a1e38",   # Dark blue — current ship to place
-    "roster_current_fg": "#7ecef0",   # Light blue text
-    "roster_pending_bg": "#080e18",   # Dark — pending ship
-    "roster_pending_fg": "#3a5268",   # Dim text
+    "roster_placed_bg": "#112211",  # Dark green — ship placed
+    "roster_placed_fg": "#6abf6a",  # Light green text
+    "roster_current_bg": "#0a1e38",  # Dark blue — current ship to place
+    "roster_current_fg": "#7ecef0",  # Light blue text
+    "roster_pending_bg": "#080e18",  # Dark — pending ship
+    "roster_pending_fg": "#3a5268",  # Dim text
     # -- Buttons ----------------------------------------------------------
     "btn_bg": "#0a1828",
     "btn_fg": "#8dafc0",
@@ -261,7 +261,9 @@ class BattleshipGUI:
         ).pack(pady=(0, 5))
 
         # Wrap canvas in a Frame for a glowing border effect.
-        own_canvas_border = tk.Frame(own_frame, bg=COLORS["canvas_glow"], padx=2, pady=2)
+        own_canvas_border = tk.Frame(
+            own_frame, bg=COLORS["canvas_glow"], padx=2, pady=2
+        )
         own_canvas_border.pack()
 
         self.own_canvas = tk.Canvas(
@@ -286,7 +288,9 @@ class BattleshipGUI:
         ).pack(pady=(0, 5))
 
         # Wrap canvas in a Frame for a glowing border effect.
-        attack_canvas_border = tk.Frame(attack_frame, bg=COLORS["canvas_glow"], padx=2, pady=2)
+        attack_canvas_border = tk.Frame(
+            attack_frame, bg=COLORS["canvas_glow"], padx=2, pady=2
+        )
         attack_canvas_border.pack()
 
         self.attack_canvas = tk.Canvas(
@@ -335,9 +339,7 @@ class BattleshipGUI:
         self.rotate_btn.pack(side=tk.LEFT)
 
         # -- Status bar (colored frame changes with game state) -----------
-        self.status_frame = tk.Frame(
-            self.root, bg=COLORS["status_wait_bg"], pady=8
-        )
+        self.status_frame = tk.Frame(self.root, bg=COLORS["status_wait_bg"], pady=8)
         self.status_frame.pack(fill=tk.X, padx=20, pady=(4, 4))
 
         self.status_var = tk.StringVar(value="Connecting to server...")
@@ -383,9 +385,9 @@ class BattleshipGUI:
         self.log_text.pack(side=tk.LEFT, fill=tk.X, expand=True)
 
         # Configure color tags for different log message types.
-        self.log_text.tag_configure("hit",    foreground=COLORS["log_hit"])
-        self.log_text.tag_configure("miss",   foreground=COLORS["log_miss"])
-        self.log_text.tag_configure("sunk",   foreground=COLORS["log_sunk"])
+        self.log_text.tag_configure("hit", foreground=COLORS["log_hit"])
+        self.log_text.tag_configure("miss", foreground=COLORS["log_miss"])
+        self.log_text.tag_configure("sunk", foreground=COLORS["log_sunk"])
         self.log_text.tag_configure("system", foreground=COLORS["log_system"])
         self.log_text.tag_configure("default", foreground=COLORS["text"])
 
@@ -548,7 +550,10 @@ class BattleshipGUI:
                 y2 = y1 + CELL_SIZE
 
                 canvas.create_rectangle(
-                    x1, y1, x2, y2,
+                    x1,
+                    y1,
+                    x2,
+                    y2,
                     fill=COLORS["empty"],
                     outline=COLORS["grid_line"],
                     width=1,
@@ -584,10 +589,10 @@ class BattleshipGUI:
 
         # Each cell has its own spatial phase shift so waves appear to travel
         # diagonally across the board rather than all cresting at the same time.
-        cell_offset = (row * 1.1 + col * 0.7)
+        cell_offset = row * 1.1 + col * 0.7
 
-        n = 12       # Number of sample points per wave line
-        amp = 2.2    # Sine amplitude in pixels
+        n = 12  # Number of sample points per wave line
+        amp = 2.2  # Sine amplitude in pixels
 
         for i, (frac, color) in enumerate(
             ((0.30, COLORS["wave_bright"]), (0.65, COLORS["wave_dim"]))
@@ -602,7 +607,9 @@ class BattleshipGUI:
                 py = wy + amp * math.sin(2 * math.pi * j / n + line_phase)
                 pts.extend([px, py])
 
-            canvas.create_line(*pts, fill=color, width=1, smooth=False, tags=(tag, "wave"))
+            canvas.create_line(
+                *pts, fill=color, width=1, smooth=False, tags=(tag, "wave")
+            )
 
     def _set_cell_color(
         self, canvas: tk.Canvas, row: int, col: int, color: str
@@ -675,8 +682,12 @@ class BattleshipGUI:
         if marker_type in ("hit", "sunk"):
             # --- Explosion starburst ---
             # Outer glow color and inner fill color differ by severity.
-            glow_color = COLORS["hit_glow"] if marker_type == "hit" else COLORS["sunk_glow"]
-            fill_color = COLORS["hit_marker"] if marker_type == "hit" else COLORS["sunk_marker"]
+            glow_color = (
+                COLORS["hit_glow"] if marker_type == "hit" else COLORS["sunk_glow"]
+            )
+            fill_color = (
+                COLORS["hit_marker"] if marker_type == "hit" else COLORS["sunk_marker"]
+            )
 
             # Outer starburst: 8 points alternating between outer and inner radii.
             outer_r = CELL_SIZE // 2 - 5
@@ -688,10 +699,12 @@ class BattleshipGUI:
                 angle = math.pi * i / 4 - math.pi / 8  # Rotate 22.5° for visual balance
                 r_outer = outer_r if i % 2 == 0 else inner_r
                 r_inner = int(outer_r * 0.6) if i % 2 == 0 else int(inner_r * 0.6)
-                glow_pts.extend([cx + r_outer * math.cos(angle),
-                                  cy + r_outer * math.sin(angle)])
-                fill_pts.extend([cx + r_inner * math.cos(angle),
-                                  cy + r_inner * math.sin(angle)])
+                glow_pts.extend(
+                    [cx + r_outer * math.cos(angle), cy + r_outer * math.sin(angle)]
+                )
+                fill_pts.extend(
+                    [cx + r_inner * math.cos(angle), cy + r_inner * math.sin(angle)]
+                )
 
             # Draw outer glow polygon first (behind inner).
             canvas.create_polygon(glow_pts, fill=glow_color, outline="", tags=(tag,))
@@ -700,8 +713,13 @@ class BattleshipGUI:
             # Bright center dot.
             center_r = 4 if marker_type == "hit" else 5
             canvas.create_oval(
-                cx - center_r, cy - center_r, cx + center_r, cy + center_r,
-                fill="#ffffff", outline="", tags=(tag,),
+                cx - center_r,
+                cy - center_r,
+                cx + center_r,
+                cy + center_r,
+                fill="#ffffff",
+                outline="",
+                tags=(tag,),
             )
 
         elif marker_type == "miss":
@@ -710,23 +728,46 @@ class BattleshipGUI:
 
             # Outermost faint ring (splash boundary).
             canvas.create_oval(
-                cx - r - 5, cy - r - 5, cx + r + 5, cy + r + 5,
-                outline=COLORS["miss_ring"], width=1, fill="", tags=(tag,),
+                cx - r - 5,
+                cy - r - 5,
+                cx + r + 5,
+                cy + r + 5,
+                outline=COLORS["miss_ring"],
+                width=1,
+                fill="",
+                tags=(tag,),
             )
             # Main ring.
             canvas.create_oval(
-                cx - r, cy - r, cx + r, cy + r,
-                outline=COLORS["miss_marker"], width=2, fill="#0a1824", tags=(tag,),
+                cx - r,
+                cy - r,
+                cx + r,
+                cy + r,
+                outline=COLORS["miss_marker"],
+                width=2,
+                fill="#0a1824",
+                tags=(tag,),
             )
             # Small inner ring.
             canvas.create_oval(
-                cx - r + 5, cy - r + 5, cx + r - 5, cy + r - 5,
-                outline=COLORS["miss_dot"], width=1, fill="", tags=(tag,),
+                cx - r + 5,
+                cy - r + 5,
+                cx + r - 5,
+                cy + r - 5,
+                outline=COLORS["miss_dot"],
+                width=1,
+                fill="",
+                tags=(tag,),
             )
             # Center droplet dot.
             canvas.create_oval(
-                cx - 3, cy - 3, cx + 3, cy + 3,
-                fill=COLORS["miss_dot"], outline="", tags=(tag,),
+                cx - 3,
+                cy - 3,
+                cx + 3,
+                cy + 3,
+                fill=COLORS["miss_dot"],
+                outline="",
+                tags=(tag,),
             )
 
     def _draw_ship_overlay(self, ship_dict: dict) -> None:
@@ -780,8 +821,10 @@ class BattleshipGUI:
 
             # Draw main hull body rectangle.
             self.own_canvas.create_rectangle(
-                x1 + pl, y1 + pt,
-                x2 - pr, y2 - pb,
+                x1 + pl,
+                y1 + pt,
+                x2 - pr,
+                y2 - pb,
                 fill=COLORS["ship"],
                 outline=COLORS["ship_outline"],
                 width=1,
@@ -792,16 +835,20 @@ class BattleshipGUI:
             # to simulate a metallic sheen on the hull.
             if horizontal:
                 self.own_canvas.create_rectangle(
-                    x1 + pl + 1, y1 + pt + 1,
-                    x2 - pr - 1, y1 + pt + 4,
+                    x1 + pl + 1,
+                    y1 + pt + 1,
+                    x2 - pr - 1,
+                    y1 + pt + 4,
                     fill=COLORS["ship_highlight"],
                     outline="",
                     tags=(tag, "shp_ovl"),
                 )
             else:
                 self.own_canvas.create_rectangle(
-                    x1 + pl + 1, y1 + pt + 1,
-                    x1 + pl + 4, y2 - pb - 1,
+                    x1 + pl + 1,
+                    y1 + pt + 1,
+                    x1 + pl + 4,
+                    y2 - pb - 1,
                     fill=COLORS["ship_highlight"],
                     outline="",
                     tags=(tag, "shp_ovl"),
@@ -810,16 +857,20 @@ class BattleshipGUI:
             # Draw a dark deck stripe near the bottom/right edge.
             if horizontal:
                 self.own_canvas.create_rectangle(
-                    x1 + pl + 1, y2 - pb - 4,
-                    x2 - pr - 1, y2 - pb - 1,
+                    x1 + pl + 1,
+                    y2 - pb - 4,
+                    x2 - pr - 1,
+                    y2 - pb - 1,
                     fill=COLORS["ship_deck"],
                     outline="",
                     tags=(tag, "shp_ovl"),
                 )
             else:
                 self.own_canvas.create_rectangle(
-                    x2 - pr - 4, y1 + pt + 1,
-                    x2 - pr - 1, y2 - pb - 1,
+                    x2 - pr - 4,
+                    y1 + pt + 1,
+                    x2 - pr - 1,
+                    y2 - pb - 1,
                     fill=COLORS["ship_deck"],
                     outline="",
                     tags=(tag, "shp_ovl"),
@@ -975,7 +1026,9 @@ class BattleshipGUI:
             return
 
         color = (
-            COLORS["hover_valid"] if self._is_valid_placement(cells) else COLORS["hover_invalid"]
+            COLORS["hover_valid"]
+            if self._is_valid_placement(cells)
+            else COLORS["hover_invalid"]
         )
         for r, c in cells:
             self._set_cell_color(self.own_canvas, r, c, color)
@@ -1024,8 +1077,11 @@ class BattleshipGUI:
         }
         self.placed_ships.append(ship_dict)
 
-        self.log(f"Placed {name} at {chr(65 + col)}{row + 1} "
-                 f"({'H' if self.is_horizontal else 'V'}).", "system")
+        self.log(
+            f"Placed {name} at {chr(65 + col)}{row + 1} "
+            f"({'H' if self.is_horizontal else 'V'}).",
+            "system",
+        )
 
         # Advance to the next ship.
         self.current_ship_index += 1
@@ -1126,7 +1182,9 @@ class BattleshipGUI:
         # Record the fire and disable further clicks until RESULT arrives.
         self.fired_cells.add((row, col))
         self.my_turn = False
-        self.status_var.set(f"💣  Fired at {chr(65 + col)}{row + 1}... awaiting result.")
+        self.status_var.set(
+            f"💣  Fired at {chr(65 + col)}{row + 1}... awaiting result."
+        )
         self._set_status_style("wait")
 
         self.send_callback({"type": "FIRE", "row": row, "col": col})
@@ -1219,7 +1277,10 @@ class BattleshipGUI:
             # Line width tapers as the ring expands (thicker near centre).
             width = max(1, 3 - int(3 * r / max_r))
             self.attack_canvas.create_oval(
-                cx - r, cy - r, cx + r, cy + r,
+                cx - r,
+                cy - r,
+                cx + r,
+                cy + r,
                 outline=COLORS["sonar_ring"],
                 width=width,
                 tags=("sonar",),
@@ -1227,7 +1288,10 @@ class BattleshipGUI:
             # Small origin dot while the ring is still close to the centre.
             if r < 20:
                 self.attack_canvas.create_oval(
-                    cx - 3, cy - 3, cx + 3, cy + 3,
+                    cx - 3,
+                    cy - 3,
+                    cx + 3,
+                    cy + 3,
                     fill=COLORS["sonar_center"],
                     outline=COLORS["sonar_ring"],
                     width=1,
@@ -1366,7 +1430,7 @@ class BattleshipGUI:
         self.placed_ships = []
         self.own_ship_cells = set()
         self.rotate_btn.configure(state=tk.NORMAL)
-        self._draw_grid(self.own_canvas)   # Deletes all, redraws waves.
+        self._draw_grid(self.own_canvas)  # Deletes all, redraws waves.
         self._update_placement_labels()
         self._update_ship_roster()
 
@@ -1379,7 +1443,7 @@ class BattleshipGUI:
     def _handle_your_turn(self) -> None:
         """Handle YOUR_TURN: it is now our turn to fire."""
         self.my_turn = True
-        self._stop_sonar()   # Stop sonar sweep — player is now active.
+        self._stop_sonar()  # Stop sonar sweep — player is now active.
         self._update_turn_status()
 
     def _handle_opponent_turn(self) -> None:
@@ -1511,7 +1575,10 @@ class BattleshipGUI:
         for canvas in (self.own_canvas, self.attack_canvas):
             # Stippled semi-transparent full-canvas overlay.
             canvas.create_rectangle(
-                0, 0, canvas_w, canvas_h,
+                0,
+                0,
+                canvas_w,
+                canvas_h,
                 fill=overlay_color,
                 stipple="gray50",
                 tags=("overlay",),
@@ -1519,8 +1586,10 @@ class BattleshipGUI:
             # Outer decorative border box.
             box_w, box_h = 240, 100
             canvas.create_rectangle(
-                cx - box_w // 2 - 3, cy - box_h // 2 - 3,
-                cx + box_w // 2 + 3, cy + box_h // 2 + 3,
+                cx - box_w // 2 - 3,
+                cy - box_h // 2 - 3,
+                cx + box_w // 2 + 3,
+                cy + box_h // 2 + 3,
                 fill="",
                 outline=border_color,
                 width=1,
@@ -1528,8 +1597,10 @@ class BattleshipGUI:
             )
             # Solid backing box for the text.
             canvas.create_rectangle(
-                cx - box_w // 2, cy - box_h // 2,
-                cx + box_w // 2, cy + box_h // 2,
+                cx - box_w // 2,
+                cy - box_h // 2,
+                cx + box_w // 2,
+                cy + box_h // 2,
                 fill=overlay_color,
                 outline=border_color,
                 width=2,
@@ -1537,7 +1608,8 @@ class BattleshipGUI:
             )
             # Main headline.
             canvas.create_text(
-                cx, cy - 18,
+                cx,
+                cy - 18,
                 text=headline,
                 fill=text_color,
                 font=("Helvetica", 28, "bold"),
@@ -1545,13 +1617,18 @@ class BattleshipGUI:
             )
             # Decorative divider line.
             canvas.create_line(
-                cx - 80, cy + 6,
-                cx + 80, cy + 6,
-                fill=border_color, width=1, tags=("overlay",),
+                cx - 80,
+                cy + 6,
+                cx + 80,
+                cy + 6,
+                fill=border_color,
+                width=1,
+                tags=("overlay",),
             )
             # Subtitle.
             canvas.create_text(
-                cx, cy + 26,
+                cx,
+                cy + 26,
                 text=subtitle,
                 fill=text_color,
                 font=("Helvetica", 10),
