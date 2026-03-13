@@ -147,6 +147,26 @@ class TestHandshake:
         assert "message" in msg1
         assert "message" in msg2
 
+    def test_game_start_sent_after_welcome(self, two_player_session):
+        """Both players receive GAME_START after WELCOME."""
+        p1, p2 = two_player_session
+
+        # Consume WELCOME messages.
+        recv_message(p1)
+        recv_message(p2)
+
+        # GAME_START should follow.
+        gs1 = recv_message(p1)
+        gs2 = recv_message(p2)
+
+        assert gs1 is not None
+        assert gs1["type"] == "GAME_START"
+        assert "message" in gs1
+
+        assert gs2 is not None
+        assert gs2["type"] == "GAME_START"
+        assert "message" in gs2
+
 
 # ---------------------------------------------------------------------------
 # Ship placement tests
@@ -160,9 +180,11 @@ class TestShipPlacement:
         """Valid ship placements are accepted with SHIPS_CONFIRMED."""
         p1, p2 = two_player_session
 
-        # Consume WELCOME messages.
-        recv_message(p1)
-        recv_message(p2)
+        # Consume WELCOME and GAME_START messages.
+        recv_message(p1)  # WELCOME
+        recv_message(p2)  # WELCOME
+        recv_message(p1)  # GAME_START
+        recv_message(p2)  # GAME_START
 
         # P1 places ships.
         send_message(p1, {"type": "PLACE_SHIPS", "ships": STANDARD_SHIP_PLACEMENTS})
@@ -175,9 +197,11 @@ class TestShipPlacement:
         """Invalid ship placements are rejected with SHIPS_REJECTED."""
         p1, p2 = two_player_session
 
-        # Consume WELCOME messages.
-        recv_message(p1)
-        recv_message(p2)
+        # Consume WELCOME and GAME_START messages.
+        recv_message(p1)  # WELCOME
+        recv_message(p2)  # WELCOME
+        recv_message(p1)  # GAME_START
+        recv_message(p2)  # GAME_START
 
         # Send an invalid placement (wrong number of ships).
         bad_ships = [
@@ -194,9 +218,11 @@ class TestShipPlacement:
         """Sending FIRE during setup returns an ERROR."""
         p1, p2 = two_player_session
 
-        # Consume WELCOME messages.
-        recv_message(p1)
-        recv_message(p2)
+        # Consume WELCOME and GAME_START messages.
+        recv_message(p1)  # WELCOME
+        recv_message(p2)  # WELCOME
+        recv_message(p1)  # GAME_START
+        recv_message(p2)  # GAME_START
 
         # Send FIRE instead of PLACE_SHIPS.
         send_message(p1, {"type": "FIRE", "row": 0, "col": 0})
@@ -210,9 +236,11 @@ class TestShipPlacement:
         """After both players place ships, both receive ALL_READY."""
         p1, p2 = two_player_session
 
-        # Consume WELCOME messages.
-        recv_message(p1)
-        recv_message(p2)
+        # Consume WELCOME and GAME_START messages.
+        recv_message(p1)  # WELCOME
+        recv_message(p2)  # WELCOME
+        recv_message(p1)  # GAME_START
+        recv_message(p2)  # GAME_START
 
         # Both place ships.
         send_message(p1, {"type": "PLACE_SHIPS", "ships": STANDARD_SHIP_PLACEMENTS})
@@ -237,9 +265,11 @@ class TestShipPlacement:
         """A player can retry placement after a rejection."""
         p1, p2 = two_player_session
 
-        # Consume WELCOME messages.
-        recv_message(p1)
-        recv_message(p2)
+        # Consume WELCOME and GAME_START messages.
+        recv_message(p1)  # WELCOME
+        recv_message(p2)  # WELCOME
+        recv_message(p1)  # GAME_START
+        recv_message(p2)  # GAME_START
 
         # First attempt: bad placement.
         bad_ships = [
@@ -266,9 +296,11 @@ def _setup_game(p1, p2):
     Consumes all messages up to and including turn notifications.
     Returns the YOUR_TURN/OPPONENT_TURN messages.
     """
-    # Consume WELCOME messages.
-    recv_message(p1)
-    recv_message(p2)
+    # Consume WELCOME and GAME_START messages.
+    recv_message(p1)  # WELCOME
+    recv_message(p2)  # WELCOME
+    recv_message(p1)  # GAME_START
+    recv_message(p2)  # GAME_START
 
     # Both place ships.
     send_message(p1, {"type": "PLACE_SHIPS", "ships": STANDARD_SHIP_PLACEMENTS})
@@ -525,9 +557,11 @@ class TestDisconnectHandling:
         )
         session_thread.start()
 
-        # Both receive WELCOME.
-        recv_message(p1_client)
-        recv_message(p2_client)
+        # Both receive WELCOME and GAME_START.
+        recv_message(p1_client)  # WELCOME
+        recv_message(p2_client)  # WELCOME
+        recv_message(p1_client)  # GAME_START
+        recv_message(p2_client)  # GAME_START
 
         # P1 disconnects abruptly.
         p1_client.close()
@@ -564,6 +598,8 @@ class TestDisconnectHandling:
         # Run through setup.
         recv_message(p1_client)  # WELCOME
         recv_message(p2_client)  # WELCOME
+        recv_message(p1_client)  # GAME_START
+        recv_message(p2_client)  # GAME_START
 
         send_message(
             p1_client,

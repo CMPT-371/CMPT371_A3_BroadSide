@@ -226,6 +226,29 @@ def game_session(conn_p1: socket.socket, conn_p2: socket.socket) -> None:
 
     logger.info("WELCOME sent to both players.")
 
+    # Send GAME_START to both players to signal the match is ready
+    # and they should begin placing ships.
+    for pid in (1, 2):
+        ok = _safe_send(
+            connections[pid],
+            {
+                "type": "GAME_START",
+                "message": "Both players connected! Place your ships.",
+            },
+            labels[pid],
+        )
+        if not ok:
+            other = 2 if pid == 1 else 1
+            _notify_and_close(
+                connections[other],
+                connections[pid],
+                labels[other],
+                labels[pid],
+            )
+            return
+
+    logger.info("GAME_START sent to both players.")
+
     # -- Phase 2: Ship Placement (SETUP) ---------------------------------
     # Both players submit their ship placements independently.
     # We create a fresh GameState to validate and store placements.
