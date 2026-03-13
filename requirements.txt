@@ -30,10 +30,5 @@
 # Third-party dependencies
 # ----------------------------------------------------------------------------
 
-# Pillow — Python Imaging Library fork
-# Used for rendering custom ship sprites, hit/miss icons, and splash screen
-# assets in the Tkinter GUI. Provides ImageTk for embedding PNG/JPEG images
-# into Canvas widgets.
-# Docs: https://pillow.readthedocs.io/en/stable/
-# Supports: Python 3.9 — 3.14
-Pillow>=11.0,<13.0
+# No third-party dependencies required.
+# All functionality uses the Python standard library.

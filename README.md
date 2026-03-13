@@ -102,8 +102,7 @@ To run this project, you need:
     Replace `3.13` with your installed Python version (`python3 --version` to check).
   - Windows: Included by default with the official Python installer (ensure "tcl/tk" is checked during install)
   - Linux: Install via `sudo apt-get install python3-tk` (Debian/Ubuntu)
-- **Pillow** (installed automatically via `requirements.txt`)
-  - Used for custom visual assets in the GUI
+- **No third-party packages required** — all functionality uses the Python standard library
 
 ---
 
@@ -302,7 +301,7 @@ CMPT371_A3_BroadSide/
 │   └── workflows/
 │       ├── lint.yml       # CI: Black + Ruff auto-formatting on push
 │       └── test.yml       # CI: pytest across 3 OS x 2 Python versions
-├── requirements.txt       # Runtime dependencies (Pillow)
+├── requirements.txt       # Runtime dependencies (stdlib only — no pip installs needed)
 ├── requirements-dev.txt   # Dev dependencies (Black, Ruff, pre-commit, pytest)
 ├── pyproject.toml         # Project config (pytest, Black, Ruff settings)
 ├── .pre-commit-config.yaml # Pre-commit hook configuration
