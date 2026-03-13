@@ -25,7 +25,7 @@ Architecture:
 References:
     - Python struct module: https://docs.python.org/3/library/struct.html
     - Python socket HOWTO: https://docs.python.org/3/howto/sockets.html
-    - Claude Code was used to assist with structuring the module layout.
+    - Python struct and socket documentation.
 """
 
 from __future__ import annotations

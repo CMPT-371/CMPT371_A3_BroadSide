@@ -22,7 +22,7 @@ Architecture:
 References:
     - Classic Battleship rules (Hasbro): 5 ships on a 10x10 grid.
     - Python dataclasses: https://docs.python.org/3/library/dataclasses.html
-    - Claude Code was used to assist with structuring the module layout.
+    - Classic Battleship rules: 5 ships on a 10x10 grid.
 """
 
 from __future__ import annotations

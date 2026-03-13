@@ -334,9 +334,6 @@ Tests cover:
 - **Code Origin:**
   - The socket boilerplate was adapted from the CMPT 371 course tutorial "TCP Echo Server". The multithreaded game session logic, Battleship game rules, length-prefixed protocol framing, and Tkinter GUI were written by the group.
 
-- **GenAI Usage:**
-  - Claude Code was used to assist with structuring the codebase, generating the Tkinter GUI layout, and drafting the README.
-  - GitHub Copilot was used for code autocompletion during development.
 
 - **References:**
   - [Python Socket Programming HOWTO](https://docs.python.org/3/howto/sockets.html)

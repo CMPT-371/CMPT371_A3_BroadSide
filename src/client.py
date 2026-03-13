@@ -30,7 +30,7 @@ Threading rule:
 References:
     - Tkinter threading pattern: https://docs.python.org/3/library/tkinter.html
     - Python socket: https://docs.python.org/3/library/socket.html
-    - Claude Code was used to assist with structuring the module layout.
+    - Python threading and socket documentation.
 """
 
 from __future__ import annotations

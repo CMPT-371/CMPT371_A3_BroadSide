@@ -20,8 +20,7 @@ Threading safety:
 
 References:
     - Tkinter Canvas: https://docs.python.org/3/library/tkinter.html
-    - Claude Code was used to assist with structuring the GUI layout and
-      generating the Canvas rendering logic.
+    - Tkinter documentation and Python standard library references were used.
 """
 
 from __future__ import annotations
@@ -181,6 +180,12 @@ class BattleshipGUI:
         # -- Wave animation state -----------------------------------------
         # _wave_phase: current phase offset for animating water ripples.
         self._wave_phase: float = 0.0
+
+        # -- Attack hit tracking for sunk-ship resolution -----------------
+        # Keeps hit cells that have not yet been assigned to a confirmed sunk
+        # ship.  When a "sunk" result arrives we search this set to find all
+        # cells belonging to that ship so every cell turns dark-red together.
+        self._unassigned_attack_hits: set[tuple[int, int]] = set()
 
         # -- Sunk flash animation state -----------------------------------
         # Brief orange flash when a ship is sunk.
@@ -1137,6 +1142,7 @@ class BattleshipGUI:
         self.rotate_btn.configure(state=tk.DISABLED)
         self.ship_label.configure(text="")
         self.fired_cells = set()
+        self._unassigned_attack_hits = set()
         self.my_turn = first_turn == self.player_id
 
         # Mark all ships as placed in the roster.
@@ -1471,6 +1477,81 @@ class BattleshipGUI:
         else:
             self._apply_own_board_result(row, col, result, sunk_ship)
 
+    # =====================================================================
+    # Sunk-ship cell resolution helpers
+    # =====================================================================
+
+    def _ship_cells_from_dict(self, ship_dict: dict) -> list[tuple[int, int]]:
+        """Return all (row, col) positions occupied by a ship placement dict."""
+        row = ship_dict["row"]
+        col = ship_dict["col"]
+        size = SHIP_DEFINITIONS[ship_dict["name"]]
+        horizontal = ship_dict["horizontal"]
+        return [
+            (row, col + i) if horizontal else (row + i, col)
+            for i in range(size)
+        ]
+
+    def _connected_segment(
+        self, sorted_cells: list[tuple[int, int]], target: int, axis: int
+    ) -> list[tuple[int, int]]:
+        """Return the contiguous run of cells (sorted by `axis`) that contains `target`.
+
+        Args:
+            sorted_cells: Cells sorted by their `axis` coordinate.
+            target:       The axis-coordinate value that must be in the run.
+            axis:         0 = row axis, 1 = col axis.
+        """
+        indices = [c[axis] for c in sorted_cells]
+        if target not in indices:
+            return []
+        pos = indices.index(target)
+        start = pos
+        end = pos
+        while start > 0 and indices[start - 1] == indices[start] - 1:
+            start -= 1
+        while end < len(indices) - 1 and indices[end + 1] == indices[end] + 1:
+            end += 1
+        return sorted_cells[start : end + 1]
+
+    def _find_attack_sunk_cells(
+        self, row: int, col: int, ship_name: str
+    ) -> list[tuple[int, int]]:
+        """Identify all attack-board cells that belong to the just-sunk ship.
+
+        We know the ship size from SHIP_DEFINITIONS and that the sinking shot
+        landed on (row, col).  The remaining cells are in _unassigned_attack_hits.
+        We look for a straight horizontal or vertical connected run (including
+        the current cell) whose length matches the ship size.
+
+        Args:
+            row:       Row of the sinking shot.
+            col:       Column of the sinking shot.
+            ship_name: Name of the sunk ship (used to look up its size).
+
+        Returns:
+            List of (row, col) cells for the entire sunk ship, or just
+            [(row, col)] if the group cannot be determined.
+        """
+        size = SHIP_DEFINITIONS.get(ship_name, 1)
+        # Pool = all previous unassigned hits + the current sinking cell.
+        pool = self._unassigned_attack_hits | {(row, col)}
+
+        # --- Check horizontal run (same row, varying col) ----------------
+        h_cells = sorted([(r, c) for r, c in pool if r == row], key=lambda x: x[1])
+        h_run = self._connected_segment(h_cells, col, axis=1)
+        if len(h_run) == size:
+            return h_run
+
+        # --- Check vertical run (same col, varying row) ------------------
+        v_cells = sorted([(r, c) for r, c in pool if c == col], key=lambda x: x[0])
+        v_run = self._connected_segment(v_cells, row, axis=0)
+        if len(v_run) == size:
+            return v_run
+
+        # Fallback: size-1 ship or ambiguous layout — just colour this cell.
+        return [(row, col)]
+
     def _apply_attack_result(
         self, row: int, col: int, result: str, sunk_ship: str | None
     ) -> None:
@@ -1493,15 +1574,23 @@ class BattleshipGUI:
             self.log(f"  {coord}  Miss.", "miss")
         elif result == "hit":
             self.attack_hit_cells.add((row, col))
+            self._unassigned_attack_hits.add((row, col))
             self._set_cell_color(self.attack_canvas, row, col, COLORS["hit"])
             self._draw_marker(self.attack_canvas, row, col, "hit")
             self.log(f"  {coord}  Hit!", "hit")
         elif result == "sunk":
-            # Track as sunk (not hit) so _redraw_attack_board uses sunk color.
-            self.attack_sunk_cells.add((row, col))
-            self._set_cell_color(self.attack_canvas, row, col, COLORS["sunk"])
-            self._draw_marker(self.attack_canvas, row, col, "sunk")
-            self._flash_sunk_cells(self.attack_canvas, [(row, col)])
+            # Find ALL cells belonging to this ship (previous hits + this cell).
+            sunk_cells = self._find_attack_sunk_cells(row, col, sunk_ship or "")
+
+            for r, c in sunk_cells:
+                # Reclassify any previously-hit cells as sunk.
+                self.attack_hit_cells.discard((r, c))
+                self._unassigned_attack_hits.discard((r, c))
+                self.attack_sunk_cells.add((r, c))
+                self._set_cell_color(self.attack_canvas, r, c, COLORS["sunk"])
+                self._draw_marker(self.attack_canvas, r, c, "sunk")
+
+            self._flash_sunk_cells(self.attack_canvas, sunk_cells)
             self.log(f"  {coord}  Sunk {sunk_ship}! ☠", "sunk")
 
     def _apply_own_board_result(
@@ -1527,10 +1616,20 @@ class BattleshipGUI:
             self._draw_marker(self.own_canvas, row, col, "hit")
             self.log(f"  {coord}  Opponent hit your ship!", "hit")
         elif result == "sunk":
-            self.own_sunk_cells.add((row, col))
-            self._set_cell_color(self.own_canvas, row, col, COLORS["sunk"])
-            self._draw_marker(self.own_canvas, row, col, "sunk")
-            self._flash_sunk_cells(self.own_canvas, [(row, col)])
+            # We know our own ship positions exactly — look up by name.
+            sunk_cells: list[tuple[int, int]] = [(row, col)]
+            for ship_dict in self.placed_ships:
+                if ship_dict["name"] == sunk_ship:
+                    sunk_cells = self._ship_cells_from_dict(ship_dict)
+                    break
+
+            for r, c in sunk_cells:
+                self.own_hit_cells.discard((r, c))
+                self.own_sunk_cells.add((r, c))
+                self._set_cell_color(self.own_canvas, r, c, COLORS["sunk"])
+                self._draw_marker(self.own_canvas, r, c, "sunk")
+
+            self._flash_sunk_cells(self.own_canvas, sunk_cells)
             self.log(f"  {coord}  Opponent sunk your {sunk_ship}! 💥", "sunk")
 
     def _handle_game_over(self, message: dict) -> None:

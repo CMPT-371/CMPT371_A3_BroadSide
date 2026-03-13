@@ -36,7 +36,7 @@ References:
     - Python threading: https://docs.python.org/3/library/threading.html
     - Python socket: https://docs.python.org/3/library/socket.html
     - CMPT 371 course tutorial: "TCP Echo Server" (socket boilerplate).
-    - Claude Code was used to assist with structuring the module layout.
+    - Python threading and socket documentation.
 """
 
 from __future__ import annotations
