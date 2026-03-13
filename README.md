@@ -12,8 +12,8 @@
 
 | Name | Student ID | Email |
 | :---- | :---- | :---- |
-| Member 1 | 301XXXXXX | member1@sfu.ca |
-| Member 2 | 301XXXXXX | member2@sfu.ca |
+| Ariel Tyson | 301458219 | ajt11@sfu.ca |
+| Mahim Chaudhary | 301463607 | mca265@sfu.ca |
 
 ---
 
