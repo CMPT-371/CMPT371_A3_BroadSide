@@ -94,7 +94,12 @@ To run this project, you need:
 - **Python 3.10** or higher
 - **pip** (comes bundled with Python)
 - **Tkinter** (included with standard Python on most systems)
-  - macOS: Included with the official Python installer from [python.org](https://www.python.org/)
+  - macOS (python.org installer): Included automatically — download from [python.org](https://www.python.org/)
+  - macOS (Homebrew Python): Tkinter is **not** included by default. Run:
+    ```bash
+    brew install python-tk@3.13
+    ```
+    Replace `3.13` with your installed Python version (`python3 --version` to check).
   - Windows: Included by default with the official Python installer (ensure "tcl/tk" is checked during install)
   - Linux: Install via `sudo apt-get install python3-tk` (Debian/Ubuntu)
 - **Pillow** (installed automatically via `requirements.txt`)
