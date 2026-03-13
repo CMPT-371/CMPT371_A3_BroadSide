@@ -1487,10 +1487,7 @@ class BattleshipGUI:
         col = ship_dict["col"]
         size = SHIP_DEFINITIONS[ship_dict["name"]]
         horizontal = ship_dict["horizontal"]
-        return [
-            (row, col + i) if horizontal else (row + i, col)
-            for i in range(size)
-        ]
+        return [(row, col + i) if horizontal else (row + i, col) for i in range(size)]
 
     def _connected_segment(
         self, sorted_cells: list[tuple[int, int]], target: int, axis: int
