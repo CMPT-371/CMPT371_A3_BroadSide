@@ -400,7 +400,7 @@ class GameState:
         # --- Validate that exactly 5 ships are provided ---
         if len(ships_data) != len(SHIP_DEFINITIONS):
             return False, (
-                f"Expected {len(SHIP_DEFINITIONS)} ships, " f"got {len(ships_data)}"
+                f"Expected {len(SHIP_DEFINITIONS)} ships, got {len(ships_data)}"
             )
 
         # --- Validate that all required ship types are present ---
@@ -496,7 +496,7 @@ class GameState:
         # --- Turn check ---
         if player_id != self.current_turn:
             raise ValueError(
-                f"It is Player {self.current_turn}'s turn, " f"not Player {player_id}'s"
+                f"It is Player {self.current_turn}'s turn, not Player {player_id}'s"
             )
 
         # --- Determine the target board (opponent's) ---

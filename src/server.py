@@ -350,7 +350,7 @@ def game_session(conn_p1: socket.socket, conn_p2: socket.socket) -> None:
                     {
                         "type": "ERROR",
                         "message": (
-                            f"Expected PLACE_SHIPS during setup, " f"got '{msg_type}'."
+                            f"Expected PLACE_SHIPS during setup, got '{msg_type}'."
                         ),
                     },
                     labels[pid],
@@ -425,7 +425,7 @@ def game_session(conn_p1: socket.socket, conn_p2: socket.socket) -> None:
                 active_conn,
                 {
                     "type": "ERROR",
-                    "message": (f"Expected FIRE during your turn, got '{msg_type}'."),
+                    "message": f"Expected FIRE during your turn, got '{msg_type}'.",
                 },
                 labels[active_pid],
             )
@@ -636,7 +636,7 @@ def start_server(host: str = HOST, port: int = PORT) -> None:
                     conn,
                     {
                         "type": "ERROR",
-                        "message": (f"Expected CONNECT handshake, got '{msg_type}'."),
+                        "message": f"Expected CONNECT handshake, got '{msg_type}'.",
                     },
                     f"new@{addr[0]}:{addr[1]}",
                 )

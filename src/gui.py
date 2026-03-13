@@ -874,7 +874,7 @@ class BattleshipGUI:
         elif result == "sunk":
             self.own_hit_cells.add((row, col))
             self._set_cell_color(self.own_canvas, row, col, COLORS["sunk"])
-            self.log(f"Opponent fired at ({row}, {col}): " f"Sunk your {sunk_ship}!")
+            self.log(f"Opponent fired at ({row}, {col}): Sunk your {sunk_ship}!")
 
     def _handle_game_over(self, message: dict) -> None:
         """Handle GAME_OVER: display victory or defeat overlay.
