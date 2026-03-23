@@ -4,14 +4,14 @@
 # Install with:
 #   pip install -r requirements-dev.txt
 #
-# This file pulls in all runtime dependencies (Pillow, etc.) via -r and adds
+# This file pulls in the default project dependencies via -r and adds
 # the formatting, linting, and pre-commit tools needed for development.
 #
 # The grader only runs `pip install -r requirements.txt` — they never see
 # these dev tools. This separation ensures a clean install experience.
 # ============================================================================
 
-# Runtime dependencies (Pillow for GUI ship sprites).
+# Default project dependencies.
 -r requirements.txt
 
 # -- Code formatting ---------------------------------------------------------

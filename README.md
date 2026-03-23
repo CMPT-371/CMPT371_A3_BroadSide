@@ -102,7 +102,8 @@ To run this project, you need:
     Replace `3.13` with your installed Python version (`python3 --version` to check).
   - Windows: Included by default with the official Python installer (ensure "tcl/tk" is checked during install)
   - Linux: Install via `sudo apt-get install python3-tk` (Debian/Ubuntu)
-- **No third-party packages required** — all functionality uses the Python standard library
+- **Application runtime:** Uses the Python standard library only
+- **Test runner:** `pytest` is included in `requirements.txt` so tests can run after the standard install flow
 
 ---
 
@@ -301,8 +302,8 @@ CMPT371_A3_BroadSide/
 │   └── workflows/
 │       ├── lint.yml       # CI: Black + Ruff auto-formatting on push
 │       └── test.yml       # CI: pytest across 3 OS x 2 Python versions
-├── requirements.txt       # Runtime dependencies (stdlib only — no pip installs needed)
-├── requirements-dev.txt   # Dev dependencies (Black, Ruff, pre-commit, pytest)
+├── requirements.txt       # Default install dependencies (includes pytest for test execution)
+├── requirements-dev.txt   # Dev-only additions (Black, Ruff, pre-commit)
 ├── pyproject.toml         # Project config (pytest, Black, Ruff settings)
 ├── .pre-commit-config.yaml # Pre-commit hook configuration
 ├── .gitignore             # Python gitignore (venv, __pycache__, .pyc, etc.)
@@ -318,7 +319,7 @@ The project includes a comprehensive test suite (93 tests) covering game logic, 
 
 ```bash
 # Activate the virtual environment first, then:
-pip install -r requirements-dev.txt
+# pytest is available after `pip install -r requirements.txt`
 python3 -m pytest -v
 ```
 
