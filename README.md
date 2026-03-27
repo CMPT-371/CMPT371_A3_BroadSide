@@ -83,7 +83,7 @@ As required by the project specifications, we have identified and handled (or de
 
 Our 2-minute video demonstration covering connection establishment, ship placement, real-time gameplay, and graceful termination can be viewed below:
 
-[**Watch Project Demo**](INSERT_VIDEO_LINK_HERE)
+[**Watch Project Demo**](https://github.com/CMPT-371/CMPT371_A3_BroadSide/releases/tag/demo-video-v1)
 
 ---
 
