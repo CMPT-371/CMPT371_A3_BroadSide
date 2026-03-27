@@ -37,10 +37,12 @@ from src.game_logic import BOARD_SIZE, SHIP_DEFINITIONS
 # ---------------------------------------------------------------------------
 
 # Each grid cell is a square of this many pixels.
-CELL_SIZE: int = 44
+# Kept intentionally compact so two client windows can fit side by side
+# during local demos and screen recordings on a laptop display.
+CELL_SIZE: int = 34
 
 # Padding between the grid edge and the cell area (for row/col labels).
-LABEL_PAD: int = 28
+LABEL_PAD: int = 24
 
 # Color palette for all UI elements.
 COLORS: dict[str, str] = {
@@ -217,17 +219,17 @@ class BattleshipGUI:
         # Allow resizing so the OS maximize/zoom button works normally.
         # A minsize prevents the window from being shrunk below playable dimensions.
         self.root.resizable(True, True)
-        self.root.minsize(940, 680)
+        self.root.minsize(780, 560)
 
         # -- Title area ---------------------------------------------------
         title_frame = tk.Frame(self.root, bg=COLORS["background"])
-        title_frame.pack(pady=(14, 0))
+        title_frame.pack(pady=(10, 0))
 
         # Main title with anchor emojis for a nautical feel.
         tk.Label(
             title_frame,
             text="⚓  BroadSide  ⚓",
-            font=("Helvetica", 30, "bold"),
+            font=("Helvetica", 24, "bold"),
             fg=COLORS["title"],
             bg=COLORS["background"],
         ).pack()
@@ -235,19 +237,19 @@ class BattleshipGUI:
         tk.Label(
             title_frame,
             text="〜〜〜  N A V A L   W A R F A R E  〜〜〜",
-            font=("Helvetica", 8),
+            font=("Helvetica", 7),
             fg=COLORS["text_dim"],
             bg=COLORS["background"],
-        ).pack(pady=(2, 6))
+        ).pack(pady=(2, 4))
 
         # Thin separator line under the title.
         tk.Frame(self.root, bg=COLORS["separator"], height=1).pack(
-            fill=tk.X, padx=30, pady=(0, 10)
+            fill=tk.X, padx=20, pady=(0, 8)
         )
 
         # -- Board area (two grids side by side) --------------------------
         board_frame = tk.Frame(self.root, bg=COLORS["background"])
-        board_frame.pack(padx=20, pady=0)
+        board_frame.pack(padx=14, pady=0)
 
         # Canvas dimensions (grid cells + label padding).
         canvas_w = BOARD_SIZE * CELL_SIZE + LABEL_PAD
@@ -255,15 +257,15 @@ class BattleshipGUI:
 
         # Left: Own board ("YOUR FLEET") in cyan.
         own_frame = tk.Frame(board_frame, bg=COLORS["background"])
-        own_frame.pack(side=tk.LEFT, padx=(0, 22))
+        own_frame.pack(side=tk.LEFT, padx=(0, 16))
 
         tk.Label(
             own_frame,
             text="⛵  YOUR FLEET",
-            font=("Helvetica", 11, "bold"),
+            font=("Helvetica", 10, "bold"),
             fg=COLORS["title_own"],
             bg=COLORS["background"],
-        ).pack(pady=(0, 5))
+        ).pack(pady=(0, 4))
 
         # Wrap canvas in a Frame for a glowing border effect.
         own_canvas_border = tk.Frame(
@@ -287,10 +289,10 @@ class BattleshipGUI:
         tk.Label(
             attack_frame,
             text="🎯  ATTACK BOARD",
-            font=("Helvetica", 11, "bold"),
+            font=("Helvetica", 10, "bold"),
             fg=COLORS["title_attack"],
             bg=COLORS["background"],
-        ).pack(pady=(0, 5))
+        ).pack(pady=(0, 4))
 
         # Wrap canvas in a Frame for a glowing border effect.
         attack_canvas_border = tk.Frame(
@@ -312,23 +314,23 @@ class BattleshipGUI:
 
         # -- Control panel ------------------------------------------------
         ctrl_frame = tk.Frame(self.root, bg=COLORS["background"])
-        ctrl_frame.pack(pady=(8, 4))
+        ctrl_frame.pack(pady=(6, 3))
 
         # Current ship label (shown during placement).
         self.ship_label = tk.Label(
             ctrl_frame,
             text="",
-            font=("Helvetica", 11),
+            font=("Helvetica", 10),
             fg=COLORS["text"],
             bg=COLORS["background"],
         )
-        self.ship_label.pack(side=tk.LEFT, padx=(0, 12))
+        self.ship_label.pack(side=tk.LEFT, padx=(0, 10))
 
         # Themed rotate button (shown during placement).
         self.rotate_btn = tk.Button(
             ctrl_frame,
             text="  ↻  Rotate: Horizontal  ",
-            font=("Helvetica", 10),
+            font=("Helvetica", 9),
             command=self._toggle_rotation,
             state=tk.DISABLED,
             bg=COLORS["btn_bg"],
@@ -337,21 +339,21 @@ class BattleshipGUI:
             activeforeground=COLORS["text_bright"],
             disabledforeground=COLORS["text_dim"],
             relief=tk.FLAT,
-            padx=10,
-            pady=4,
+            padx=8,
+            pady=3,
             cursor="hand2",
         )
         self.rotate_btn.pack(side=tk.LEFT)
 
         # -- Status bar (colored frame changes with game state) -----------
-        self.status_frame = tk.Frame(self.root, bg=COLORS["status_wait_bg"], pady=8)
-        self.status_frame.pack(fill=tk.X, padx=20, pady=(4, 4))
+        self.status_frame = tk.Frame(self.root, bg=COLORS["status_wait_bg"], pady=6)
+        self.status_frame.pack(fill=tk.X, padx=14, pady=(3, 3))
 
         self.status_var = tk.StringVar(value="Connecting to server...")
         self.status_label = tk.Label(
             self.status_frame,
             textvariable=self.status_var,
-            font=("Helvetica", 12, "bold"),
+            font=("Helvetica", 11, "bold"),
             fg=COLORS["text_bright"],
             bg=COLORS["status_wait_bg"],
         )
@@ -359,33 +361,33 @@ class BattleshipGUI:
 
         # -- Game log (scrollable, color-coded text) ----------------------
         log_frame = tk.Frame(self.root, bg=COLORS["background"])
-        log_frame.pack(padx=20, pady=(0, 14), fill=tk.X)
+        log_frame.pack(padx=14, pady=(0, 10), fill=tk.X)
 
         tk.Label(
             log_frame,
             text="📋  COMBAT LOG",
-            font=("Helvetica", 8, "bold"),
+            font=("Helvetica", 7, "bold"),
             fg=COLORS["text_dim"],
             bg=COLORS["background"],
             anchor=tk.W,
-        ).pack(fill=tk.X, pady=(0, 3))
+        ).pack(fill=tk.X, pady=(0, 2))
 
         text_frame = tk.Frame(log_frame, bg=COLORS["background"])
         text_frame.pack(fill=tk.X)
 
         self.log_text = tk.Text(
             text_frame,
-            height=5,
-            width=74,
-            font=("Courier", 9),
+            height=4,
+            width=62,
+            font=("Courier", 8),
             fg=COLORS["text"],
             bg=COLORS["log_bg"],
             state=tk.DISABLED,
             wrap=tk.WORD,
             borderwidth=0,
             relief=tk.FLAT,
-            padx=6,
-            pady=4,
+            padx=5,
+            pady=3,
         )
         self.log_text.pack(side=tk.LEFT, fill=tk.X, expand=True)
 
@@ -425,15 +427,15 @@ class BattleshipGUI:
         and cell count. Colors update as ships are placed.
         """
         self.roster_outer = tk.Frame(self.root, bg=COLORS["background"])
-        self.roster_outer.pack(pady=(8, 0))
+        self.roster_outer.pack(pady=(6, 0))
 
         tk.Label(
             self.roster_outer,
             text="⚓  FLEET DEPLOYMENT",
-            font=("Helvetica", 8, "bold"),
+            font=("Helvetica", 7, "bold"),
             fg=COLORS["text_dim"],
             bg=COLORS["background"],
-        ).pack(pady=(0, 5))
+        ).pack(pady=(0, 4))
 
         ships_row = tk.Frame(self.roster_outer, bg=COLORS["background"])
         ships_row.pack()
@@ -446,17 +448,17 @@ class BattleshipGUI:
             box = tk.Frame(
                 ships_row,
                 bg=COLORS["roster_pending_bg"],
-                padx=10,
-                pady=6,
+                padx=8,
+                pady=4,
             )
-            box.pack(side=tk.LEFT, padx=4)
+            box.pack(side=tk.LEFT, padx=3)
 
             # Use a ship-segment visual: solid blocks scaled to ship size.
             blocks = "▬ " * size
             lbl = tk.Label(
                 box,
                 text=f"{name}\n{blocks}\n{size} cells",
-                font=("Courier", 8),
+                font=("Courier", 7),
                 fg=COLORS["roster_pending_fg"],
                 bg=COLORS["roster_pending_bg"],
                 justify=tk.CENTER,
